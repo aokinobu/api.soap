@@ -22,7 +22,7 @@ public class AliasEndpoint {
 		this.aliasRepository = aliasRepository;
 	}
 
-	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getTrivialNameRequest")
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "aliasRegisterRequest")
 	@ResponsePayload
 	public AliasRegisterResponse registerAlias(@RequestPayload AliasRegisterRequest request) {
 		AliasRegisterResponse response = new AliasRegisterResponse();
