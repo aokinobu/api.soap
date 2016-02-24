@@ -80,4 +80,11 @@
 		</plugins>
 
 	</build>
+	
+	<distributionManagement>
+	    <site>
+			<id>glycoinfo-projects</id>
+			<url>dav:http://nexus.glycoinfo.org/content/sites/project/glytoucan/api.soap/</url>
+		</site>
+	</distributionManagement>
 </project>

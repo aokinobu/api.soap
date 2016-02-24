@@ -10,7 +10,7 @@
       <topBarEnabled>true</topBarEnabled>
       <sideBarEnabled>true</sideBarEnabled>
       <googleSearch>
-        <sitesearch>http://nexus.glycoinfo.org/content/sites/project/api.soap/</sitesearch>
+        <sitesearch>http://nexus.glycoinfo.org/content/sites/project/glytoucan/api.soap/</sitesearch>
       </googleSearch>
     </fluidoSkin>
   </custom>
