@@ -19,10 +19,6 @@ package org.glytoucan.api.soap;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.glytoucan.api.soap.Application;
-import org.glytoucan.api.soap.contributor.AliasRegisterRequest;
-import org.glytoucan.api.soap.contributor.NotationSchema;
-import org.glytoucan.api.soap.contributor.TrivialName;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,5 +56,4 @@ public class ApplicationTests {
 		assertNotNull(new WebServiceTemplate(marshaller).marshalSendAndReceive("http://localhost:"
 				+ port + "/ws", request));
 	}
-
 }

@@ -1,0 +1,100 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:gtc="http://soap.api.glytoucan.org/"
+	targetNamespace="http://soap.api.glytoucan.org/" elementFormDefault="qualified">
+
+	<xs:complexType name="trivialName">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" />
+			<xs:element name="notationSchema" type="gtc:notationSchema" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="notationSchema">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="BCSDB" />
+			<xs:enumeration value="MSDB" />
+			<xs:enumeration value="CARBBANK" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="responseMessage">
+		<xs:sequence>
+			<xs:element name="message" type="xs:string" />
+			<xs:element name="errorCode" type="xs:integer" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="aliasRegisterRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="trivialName" type="gtc:trivialName" />
+				<xs:element name="accessionNumber" type="xs:string" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="aliasRegisterResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="trivialName" type="gtc:trivialName" />
+				<xs:element name="accessionNumber" type="xs:string" />
+				<xs:element name="responseMessage" type="gtc:responseMessage" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="glycoSequenceIdSearchRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="accessionNumber" type="xs:string" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="glycoSequenceTextSearchRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="sequence" type="xs:string" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="glycoSequenceRegisterRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="sequence" type="xs:string" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="glycoSequenceResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="sequence" type="xs:string" />
+				<xs:element name="accessionNumber" type="xs:string" />
+				<xs:element name="responseMessage" type="gtc:responseMessage" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="glycoSequenceDetailRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="accessionNumber" type="xs:string" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="glycoSequenceDetailResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="sequence" type="xs:string" />
+				<xs:element name="mass" type="xs:string" />
+				<xs:element name="iupac" type="xs:string" />
+				<xs:element name="description" type="xs:string" />
+				<xs:element name="accessionNumber" type="xs:string" />
+				<xs:element name="responseMessage" type="gtc:responseMessage" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

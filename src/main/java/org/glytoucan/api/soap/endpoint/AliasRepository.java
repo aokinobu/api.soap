@@ -1,11 +1,12 @@
-package org.glytoucan.api.soap;
+package org.glytoucan.api.soap.endpoint;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.glytoucan.api.soap.contributor.NotationSchema;
-import org.glytoucan.api.soap.contributor.TrivialName;
+import javax.annotation.PostConstruct;
+
+import org.glytoucan.core.NotationSchema;
+import org.glytoucan.core.TrivialName;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 

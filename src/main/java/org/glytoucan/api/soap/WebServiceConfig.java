@@ -23,18 +23,18 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 		return new ServletRegistrationBean(servlet, "/ws/*");
 	}
 
-	@Bean(name = "contributor")
+	@Bean(name = "model")
 	public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema contributorSchema) {
 		DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
-		wsdl11Definition.setPortTypeName("ContributorPort");
+		wsdl11Definition.setPortTypeName("modelPort");
 		wsdl11Definition.setLocationUri("/ws");
-		wsdl11Definition.setTargetNamespace("http://soap.api.glytoucan.org/contributor");
+		wsdl11Definition.setTargetNamespace("http://soap.api.glytoucan.org");
 		wsdl11Definition.setSchema(contributorSchema);
 		return wsdl11Definition;
 	}
 
 	@Bean
-	public XsdSchema countriesSchema() {
-		return new SimpleXsdSchema(new ClassPathResource("contributor.xsd"));
+	public XsdSchema modelSchema() {
+		return new SimpleXsdSchema(new ClassPathResource("model.xsd"));
 	}
 }

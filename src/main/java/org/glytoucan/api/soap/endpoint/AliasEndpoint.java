@@ -1,10 +1,10 @@
-package org.glytoucan.api.soap;
+package org.glytoucan.api.soap.endpoint;
 
 import java.math.BigInteger;
 
-import org.glytoucan.api.soap.contributor.AliasRegisterRequest;
-import org.glytoucan.api.soap.contributor.AliasRegisterResponse;
-import org.glytoucan.api.soap.contributor.ResponseMessage;
+import org.glytoucan.api.soap.AliasRegisterRequest;
+import org.glytoucan.api.soap.AliasRegisterResponse;
+import org.glytoucan.api.soap.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
@@ -13,7 +13,7 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 @Endpoint
 public class AliasEndpoint {
-	private static final String NAMESPACE_URI = "http://soap.api.glytoucan.org/contributor";
+	private static final String NAMESPACE_URI = "http://soap.api.glytoucan.org/";
 
 	private AliasRepository aliasRepository;
 
