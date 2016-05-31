@@ -6,8 +6,6 @@ package org.glytoucan.api.soap;
 import static org.junit.Assert.assertNotNull;
 
 import java.math.BigInteger;
-import java.util.Iterator;
-import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -54,7 +52,6 @@ public class GlycoSequenceEndpointTest {
 		GlycoSequenceDetailRequest request = new GlycoSequenceDetailRequest();
 		request.setAccessionNumber("G00055MO");
 		
-
 		Object result = new WebServiceTemplate(marshaller).marshalSendAndReceive("http://localhost:"
 				+ port + "/ws", request);
 		assertNotNull(result);
