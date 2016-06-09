@@ -4,6 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.glytoucan.api</groupId>
 	<artifactId>soap</artifactId>
+	<packaging>war</packaging>
 
 	<parent>
 		<groupId>org.glytoucan</groupId>
