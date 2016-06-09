@@ -24,12 +24,12 @@
 		<java.version>1.8</java.version>
 	</properties>
 
-    <distributionManagement>
-        <site>
-            <id>glycoinfo-projects</id>
-            <url>dav:http://nexus.glycoinfo.org/content/sites/project/glytoucan/api.soap/</url>
-        </site>
-    </distributionManagement>
+	<distributionManagement>
+		<site>
+			<id>glycoinfo-projects</id>
+			<url>dav:http://nexus.glycoinfo.org/content/sites/project/glytoucan/api.soap/</url>
+		</site>
+	</distributionManagement>
 
 	<dependencies>
 		<dependency>
@@ -93,6 +93,12 @@
 					<schemaDirectory>${project.basedir}/src/main/resources/</schemaDirectory>
 					<outputDirectory>${project.build.directory}/generated-source/java</outputDirectory>
 					<clearOutputDir>false</clearOutputDir>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
 		</plugins>
