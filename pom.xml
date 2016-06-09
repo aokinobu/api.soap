@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>org.glytoucan</groupId>
 		<artifactId>pom-site</artifactId>
-		<version>0.24-SNAPSHOT</version>
+		<version>1.2-SNAPSHOT</version>
 		<relativePath>${env.WORKSPACE_PARENT}/${env.WORKSPACE}/pom-site/pom.xml</relativePath>
 	</parent>
 
@@ -22,6 +22,13 @@
 		<repository.name>api.soap</repository.name>
 		<java.version>1.8</java.version>
 	</properties>
+
+    <distributionManagement>
+        <site>
+            <id>glycoinfo-projects</id>
+            <url>dav:http://nexus.glycoinfo.org/content/sites/project/glytoucan/api.soap/</url>
+        </site>
+    </distributionManagement>
 
 	<dependencies>
 		<dependency>
@@ -88,13 +95,5 @@
 				</configuration>
 			</plugin>
 		</plugins>
-
 	</build>
-
-	<distributionManagement>
-		<site>
-			<id>glycoinfo-projects</id>
-			<url>dav:http://nexus.glycoinfo.org/content/sites/project/glytoucan/api.soap/</url>
-		</site>
-	</distributionManagement>
 </project>

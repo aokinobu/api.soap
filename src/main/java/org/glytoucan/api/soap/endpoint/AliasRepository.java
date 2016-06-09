@@ -5,8 +5,8 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.glytoucan.core.NotationSchema;
-import org.glytoucan.core.TrivialName;
+import org.glytoucan.api.soap.NotationSchema;
+import org.glytoucan.api.soap.TrivialName;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
