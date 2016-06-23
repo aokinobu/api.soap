@@ -6,7 +6,7 @@ services:
       - 8888:80
     volumes:
       - ${HOME}/glytoucan/maven:/root/.m2
-      - ./api.soap:/workspace/soap.api
+      - .:/workspace/soap.api
       - ../pom-site:/workspace/pom-site
       - /etc/localtime:/etc/localtime
     working_dir: /workspace/soap.api
