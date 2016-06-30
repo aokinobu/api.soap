@@ -4,6 +4,8 @@ import java.math.BigInteger;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.glycoinfo.convert.error.ConvertException;
+import org.glycoinfo.rdf.SparqlException;
 import org.glycoinfo.rdf.dao.SparqlEntity;
 import org.glycoinfo.rdf.glycan.DerivatizedMass;
 import org.glycoinfo.rdf.glycan.GlycoSequence;
@@ -12,6 +14,8 @@ import org.glycoinfo.rdf.glycan.Saccharide;
 import org.glycoinfo.rdf.service.GlycanProcedure;
 import org.glytoucan.api.soap.GlycoSequenceDetailRequest;
 import org.glytoucan.api.soap.GlycoSequenceDetailResponse;
+import org.glytoucan.api.soap.GlycoSequenceSearchResponse;
+import org.glytoucan.api.soap.GlycoSequenceTextSearchRequest;
 import org.glytoucan.api.soap.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
@@ -34,43 +38,81 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
  */
 @Endpoint
 public class GlycoSequenceEndpoint {
-	private static final Log logger = LogFactory.getLog(GlycoSequenceEndpoint.class);
-	private static final String NAMESPACE_URI = "http://soap.api.glytoucan.org/";
+  private static final Log logger = LogFactory.getLog(GlycoSequenceEndpoint.class);
+  private static final String NAMESPACE_URI = "http://soap.api.glytoucan.org/";
 
-	private GlycanProcedure glycanProcedure;
+  private GlycanProcedure glycanProcedure;
 
-	@Autowired
-	public GlycoSequenceEndpoint(GlycanProcedure glycanProcedure) {
-		this.glycanProcedure = glycanProcedure;
-	}
+  @Autowired
+  public GlycoSequenceEndpoint(GlycanProcedure glycanProcedure) {
+    this.glycanProcedure = glycanProcedure;
+  }
 
-	/**
-	 * 
-	 * Query entry using accession number.
-	 * 
-	 * @param accessionNumber
-	 * @return
-	 */
-	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "glycoSequenceDetailRequest")
-	@ResponsePayload
-	public GlycoSequenceDetailResponse queryEntry(@RequestPayload GlycoSequenceDetailRequest request) {
-		Assert.notNull(request);
-		Assert.notNull(request.getAccessionNumber());
+  /**
+   * 
+   * Query entry using accession number.
+   * 
+   * @param accessionNumber
+   * @return
+   */
+  @PayloadRoot(namespace = NAMESPACE_URI, localPart = "glycoSequenceDetailRequest")
+  @ResponsePayload
+  public GlycoSequenceDetailResponse queryEntry(@RequestPayload GlycoSequenceDetailRequest request) {
+    Assert.notNull(request);
+    Assert.notNull(request.getAccessionNumber());
 
-		SparqlEntity se = glycanProcedure.getDescription(request.getAccessionNumber());
+    SparqlEntity se = glycanProcedure.getDescription(request.getAccessionNumber());
 
-		ResponseMessage rm = new ResponseMessage();
-		rm.setMessage(se.getValue(GlycanProcedure.Description));
-		rm.setErrorCode(new BigInteger("0"));
+    ResponseMessage rm = new ResponseMessage();
+    rm.setMessage(se.getValue(GlycanProcedure.Description));
+    rm.setErrorCode(new BigInteger("0"));
 
-		GlycoSequenceDetailResponse gsdr = new GlycoSequenceDetailResponse();
+    GlycoSequenceDetailResponse gsdr = new GlycoSequenceDetailResponse();
 
-		gsdr.setAccessionNumber(se.getValue(ResourceEntry.Identifier));
-		gsdr.setDescription(se.getValue(GlycanProcedure.Description));
-		gsdr.setIupac(se.getValue(GlycoSequence.Sequence));
-		gsdr.setMass(se.getValue(DerivatizedMass.MassLabel));
-		gsdr.setSequence(se.getValue(GlycoSequence.Sequence));
-		gsdr.setResponseMessage(rm);
-		return gsdr;
-	}
+    gsdr.setAccessionNumber(se.getValue(ResourceEntry.Identifier));
+    gsdr.setDescription(se.getValue(GlycanProcedure.Description));
+    gsdr.setIupac(se.getValue(GlycoSequence.Sequence));
+    gsdr.setMass(se.getValue(DerivatizedMass.MassLabel));
+    gsdr.setSequence(se.getValue(GlycoSequence.Sequence));
+    gsdr.setResponseMessage(rm);
+    return gsdr;
+  }
+
+  /**
+   * 
+   * Search for entry using sequence text.
+   * 
+   * @param sequence
+   *          text
+   * @return glycosequencesearchresponse
+   * 
+   */
+  @PayloadRoot(namespace = NAMESPACE_URI, localPart = "glycoSequenceTextSearchRequest")
+  @ResponsePayload
+  public GlycoSequenceSearchResponse searchSequence(@RequestPayload GlycoSequenceTextSearchRequest request) {
+    Assert.notNull(request);
+    Assert.notNull(request.getSequence());
+    GlycoSequenceSearchResponse gssr = new GlycoSequenceSearchResponse();
+
+    SparqlEntity se;
+    try {
+      se = glycanProcedure.searchBySequence(request.getSequence());
+    } catch (SparqlException | ConvertException e) {
+      ResponseMessage rm = new ResponseMessage();
+      logger.debug("error message>" + e.getMessage() + "<");
+      rm.setMessage(e.getMessage());
+      rm.setErrorCode(new BigInteger(GlycanProcedure.CouldNotConvertErrorCode));
+      gssr.setResponseMessage(rm);
+      return gssr;
+    }
+
+    ResponseMessage rm = new ResponseMessage();
+    rm.setMessage(se.getValue(GlycanProcedure.FromSequence));
+    rm.setErrorCode(new BigInteger("0"));
+
+    gssr.setAccessionNumber(se.getValue(GlycanProcedure.AccessionNumber));
+    gssr.setSequence(se.getValue(GlycanProcedure.Sequence));
+    gssr.setResponseMessage(rm);
+    return gssr;
+  }
 }

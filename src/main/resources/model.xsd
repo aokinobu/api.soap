@@ -67,7 +67,7 @@
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="glycoSequenceResponse">
+	<xs:element name="glycoSequenceSearchResponse">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="sequence" type="xs:string" />
