@@ -6,10 +6,9 @@ services:
       - 8888:80
     volumes:
       - ${HOME}/glytoucan/maven:/root/.m2
-      - .:/workspace/soap.api
-      - ../pom-site:/workspace/pom-site
+      - ${PARENT_WORKSPACE}/${WORKSPACE}/docker-compose-glytoucan:/workspace
       - /etc/localtime:/etc/localtime
-    working_dir: /workspace/soap.api
+    working_dir: /workspace/api.soap
     command: mvn -U -DskipTests=true spring-boot:run
     environment:
      - SERVER_PORT=80
