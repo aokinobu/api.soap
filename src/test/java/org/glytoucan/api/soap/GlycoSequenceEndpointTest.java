@@ -141,4 +141,25 @@ public class GlycoSequenceEndpointTest {
      Assert.assertEquals(new BigInteger("0"),response.getResponseMessage().getErrorCode());
      Assert.assertEquals("not registered", response.getAccessionNumber());
    }  
+	 
+   @Test
+   public void testSendAndReceiveTextSearchInvalid() {
+     GlycoSequenceTextSearchRequest request = new GlycoSequenceTextSearchRequest();
+     request.setSequence(" RES"
+         + "1b:b-dgal-HEX-1:5\n" + 
+         "2b:a-dglc-HEX-1:5\n" + 
+         "3s:n-acetyl" + 
+         "LIN\n" + 
+         "1:1o(4+1)2d\n" + 
+         "2:2d(2+1)3n  \n");
+     
+     
+     Object result = new WebServiceTemplate(marshaller).marshalSendAndReceive("http://localhost:"
+         + port + "/ws", request);
+     assertNotNull(result);
+     GlycoSequenceSearchResponse response = (GlycoSequenceSearchResponse)result;
+     logger.debug(response);
+     Assert.assertTrue(response.getResponseMessage().getMessage().startsWith("Conversion Exception "));
+     Assert.assertEquals(new BigInteger("-100"),response.getResponseMessage().getErrorCode());
+   }  
 }

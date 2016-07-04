@@ -2,6 +2,7 @@ package org.glytoucan.api.soap.endpoint;
 
 import java.math.BigInteger;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.glycoinfo.convert.error.ConvertException;
@@ -17,6 +18,7 @@ import org.glytoucan.api.soap.GlycoSequenceDetailResponse;
 import org.glytoucan.api.soap.GlycoSequenceSearchResponse;
 import org.glytoucan.api.soap.GlycoSequenceTextSearchRequest;
 import org.glytoucan.api.soap.ResponseMessage;
+import org.glytoucan.api.soap.util.ResponseMessageGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
@@ -98,9 +100,7 @@ public class GlycoSequenceEndpoint {
     try {
       se = glycanProcedure.searchBySequence(request.getSequence());
     } catch (SparqlException | ConvertException e) {
-      ResponseMessage rm = new ResponseMessage();
-      logger.debug("error message>" + e.getMessage() + "<");
-      rm.setMessage(e.getMessage());
+      ResponseMessage rm = ResponseMessageGenerator.extractException(e);
       rm.setErrorCode(new BigInteger(GlycanProcedure.CouldNotConvertErrorCode));
       gssr.setResponseMessage(rm);
       return gssr;

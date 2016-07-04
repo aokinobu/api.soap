@@ -1,5 +1,6 @@
 package org.glytoucan.api.soap;
 
+import org.glycoinfo.convert.GlyConvertConfig;
 import org.glycoinfo.rdf.dao.virt.VirtSesameTransactionConfig;
 import org.glycoinfo.rdf.service.impl.GlycanProcedureConfig;
 import org.springframework.boot.SpringApplication;
@@ -10,7 +11,7 @@ import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
-@Import({ GlycanProcedureConfig.class, VirtSesameTransactionConfig.class })
+@Import({ GlycanProcedureConfig.class, VirtSesameTransactionConfig.class, GlyConvertConfig.class })
 @EnableAutoConfiguration(exclude = { SecurityAutoConfiguration.class,
     org.springframework.boot.autoconfigure.security.SpringBootWebSecurityConfiguration.class })
 public class Application {
