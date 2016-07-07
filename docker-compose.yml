@@ -22,4 +22,5 @@ services:
      - SPRING_MAIL_PASSWORD
      - SPRING_TRIPLESTORE_PASSWORD
      - SPRING_TRIPLESTORE_URL
+     - MAVEN_OPTS=-da:org.openrdf...
     restart: always
