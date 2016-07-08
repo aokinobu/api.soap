@@ -112,6 +112,7 @@ public class GlycoSequenceEndpoint {
 
     gssr.setAccessionNumber(se.getValue(GlycanProcedure.AccessionNumber));
     gssr.setSequence(se.getValue(GlycanProcedure.Sequence));
+    gssr.setImage(se.getValue(GlycanProcedure.Image));
     gssr.setResponseMessage(rm);
     return gssr;
   }

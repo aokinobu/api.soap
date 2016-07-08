@@ -78,6 +78,24 @@ public class GlycoSequenceEndpointTest {
 	    Assert.assertEquals("G97036DW", response.getAccessionNumber());
 	    Assert.assertTrue(response.getDescription().contains("Error+in+GlycoCT+validation"));
 	  }
+	 
+   @Test
+   public void testSendAndReceiveG86383BI() {
+     // new accession number with no iupac...
+     // need -da command line param for java
+     GlycoSequenceDetailRequest request = new GlycoSequenceDetailRequest();
+     request.setAccessionNumber("G86383BI");
+     
+     Object result = new WebServiceTemplate(marshaller).marshalSendAndReceive("http://localhost:"
+         + port + "/ws", request);
+     assertNotNull(result);
+     GlycoSequenceDetailResponse response = (GlycoSequenceDetailResponse)result;
+     logger.debug(response);
+     logger.debug(response.getDescription());
+     Assert.assertEquals(new BigInteger("0"),response.getResponseMessage().getErrorCode());
+     Assert.assertEquals("G86383BI", response.getAccessionNumber());
+     Assert.assertTrue(response.getDescription().contains("G86383BI"));
+   }
 	
    @Test
    public void testSendAndReceiveTextSearchG94473FP() {
@@ -161,5 +179,19 @@ public class GlycoSequenceEndpointTest {
      logger.debug(response);
      Assert.assertTrue(response.getResponseMessage().getMessage().startsWith("Conversion Exception "));
      Assert.assertEquals(new BigInteger("-100"),response.getResponseMessage().getErrorCode());
+   }  
+   
+   @Test
+   public void testSendAndReceiveTextSearchIupac() {
+     GlycoSequenceTextSearchRequest request = new GlycoSequenceTextSearchRequest();
+     request.setSequence("Glc");
+     
+     Object result = new WebServiceTemplate(marshaller).marshalSendAndReceive("http://localhost:"
+         + port + "/ws", request);
+     assertNotNull(result);
+     GlycoSequenceSearchResponse response = (GlycoSequenceSearchResponse)result;
+     logger.debug(response);
+     Assert.assertEquals(new BigInteger("0"),response.getResponseMessage().getErrorCode());
+     Assert.assertEquals("G15021LG", response.getAccessionNumber());
    }  
 }

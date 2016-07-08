@@ -72,6 +72,7 @@
 			<xs:sequence>
 				<xs:element name="sequence" type="xs:string" />
 				<xs:element name="accessionNumber" type="xs:string" />
+				<xs:element name="image" type="xs:string" />
 				<xs:element name="responseMessage" type="gtc:responseMessage" />
 			</xs:sequence>
 		</xs:complexType>
