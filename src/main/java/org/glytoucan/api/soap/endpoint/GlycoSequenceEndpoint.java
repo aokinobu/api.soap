@@ -13,6 +13,7 @@ import org.glycoinfo.rdf.glycan.GlycoSequence;
 import org.glycoinfo.rdf.glycan.ResourceEntry;
 import org.glycoinfo.rdf.glycan.Saccharide;
 import org.glycoinfo.rdf.service.GlycanProcedure;
+import org.glycoinfo.rdf.service.exception.InvalidException;
 import org.glytoucan.api.soap.GlycoSequenceDetailRequest;
 import org.glytoucan.api.soap.GlycoSequenceDetailResponse;
 import org.glytoucan.api.soap.GlycoSequenceSearchResponse;
@@ -63,13 +64,22 @@ public class GlycoSequenceEndpoint {
     Assert.notNull(request);
     Assert.notNull(request.getAccessionNumber());
 
-    SparqlEntity se = glycanProcedure.getDescription(request.getAccessionNumber());
-
+    SparqlEntity se = null;
     ResponseMessage rm = new ResponseMessage();
+    GlycoSequenceDetailResponse gsdr = new GlycoSequenceDetailResponse();
+	try {
+		se = glycanProcedure.getDescription(request.getAccessionNumber());
+	} catch (InvalidException e) {
+		// invalid data in se, return with errorcode.
+	    rm.setMessage("Invalid Accession Number");
+	    rm.setErrorCode(new BigInteger("-100"));
+	    gsdr.setAccessionNumber(request.getAccessionNumber());
+	    gsdr.setResponseMessage(rm);
+	    return gsdr;
+	}
+
     rm.setMessage(se.getValue(GlycanProcedure.Description));
     rm.setErrorCode(new BigInteger("0"));
-
-    GlycoSequenceDetailResponse gsdr = new GlycoSequenceDetailResponse();
 
     gsdr.setAccessionNumber(se.getValue(ResourceEntry.Identifier));
     gsdr.setDescription(se.getValue(GlycanProcedure.Description));
