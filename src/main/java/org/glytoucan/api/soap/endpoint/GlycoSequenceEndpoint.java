@@ -14,6 +14,8 @@ import org.glycoinfo.rdf.glycan.ResourceEntry;
 import org.glycoinfo.rdf.glycan.Saccharide;
 import org.glycoinfo.rdf.service.GlycanProcedure;
 import org.glycoinfo.rdf.service.exception.InvalidException;
+import org.glytoucan.api.soap.GlycoSequenceCountRequest;
+import org.glytoucan.api.soap.GlycoSequenceCountResponse;
 import org.glytoucan.api.soap.GlycoSequenceDetailRequest;
 import org.glytoucan.api.soap.GlycoSequenceDetailResponse;
 import org.glytoucan.api.soap.GlycoSequenceSearchResponse;
@@ -125,5 +127,29 @@ public class GlycoSequenceEndpoint {
     gssr.setImage(se.getValue(GlycanProcedure.Image));
     gssr.setResponseMessage(rm);
     return gssr;
+  }
+  
+  /**
+   * 
+   * Query for total count.
+   * 
+   * @return glycosequencecountresponse
+   * 
+   */
+  @PayloadRoot(namespace = NAMESPACE_URI, localPart = "glycoSequenceCountRequest")
+  @ResponsePayload
+  public GlycoSequenceCountResponse countSequence(@RequestPayload GlycoSequenceCountRequest request) {
+    Assert.notNull(request);
+    GlycoSequenceCountResponse gscr = new GlycoSequenceCountResponse();
+
+    SparqlEntity se = glycanProcedure.getCount();
+
+    ResponseMessage rm = new ResponseMessage();
+    rm.setMessage(se.getValue("total"));
+    rm.setErrorCode(new BigInteger("0"));
+
+    gscr.setCount(se.getValue("total"));
+    gscr.setResponseMessage(rm);
+    return gscr;
   }
 }

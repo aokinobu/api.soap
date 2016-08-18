@@ -1,6 +1,6 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	xmlns:gtc="http://soap.api.glytoucan.org/"
-	targetNamespace="http://soap.api.glytoucan.org/" elementFormDefault="qualified">
+	xmlns:gtc="http://soap.api.glytoucan.org/" targetNamespace="http://soap.api.glytoucan.org/"
+	elementFormDefault="qualified">
 
 	<xs:complexType name="trivialName">
 		<xs:sequence>
@@ -14,6 +14,17 @@
 			<xs:enumeration value="BCSDB" />
 			<xs:enumeration value="MSDB" />
 			<xs:enumeration value="CARBBANK" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="classType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="GLYCOSEQUENCE_WURCS" />
+			<xs:enumeration value="GLYCOSEQUENCE_GLYCOCT" />
+			<xs:enumeration value="GLYCOSEQUENCE_IUPAC_EXTENDED" />
+			<xs:enumeration value="GLYCOSEQUENCE" />
+			<xs:enumeration value="MONOSACCHARIDE" />
+			<xs:enumeration value="MOTIF" />
 		</xs:restriction>
 	</xs:simpleType>
 
@@ -98,4 +109,22 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
+
+	<xs:element name="glycoSequenceCountRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="type" type="gtc:classType" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="glycoSequenceCountResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="count" type="xs:string" />
+				<xs:element name="responseMessage" type="gtc:responseMessage" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
 </xs:schema>

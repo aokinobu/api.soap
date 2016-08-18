@@ -193,5 +193,19 @@ public class GlycoSequenceEndpointTest {
      logger.debug(response);
      Assert.assertEquals(new BigInteger("0"),response.getResponseMessage().getErrorCode());
      Assert.assertEquals("G15021LG", response.getAccessionNumber());
+   }
+   
+   @Test
+   public void testCount() {
+     GlycoSequenceCountRequest request = new GlycoSequenceCountRequest();
+     request.setType(ClassType.GLYCOSEQUENCE_WURCS);
+     
+     Object result = new WebServiceTemplate(marshaller).marshalSendAndReceive("http://localhost:"
+         + port + "/ws", request);
+     assertNotNull(result);
+     GlycoSequenceCountResponse response = (GlycoSequenceCountResponse)result;
+     logger.debug(response);
+     Assert.assertEquals(new BigInteger("0"),response.getResponseMessage().getErrorCode());
+     Assert.assertEquals(new BigInteger("59632"),response.getCount());
    }  
 }
