@@ -206,6 +206,6 @@ public class GlycoSequenceEndpointTest {
      GlycoSequenceCountResponse response = (GlycoSequenceCountResponse)result;
      logger.debug(response);
      Assert.assertEquals(new BigInteger("0"),response.getResponseMessage().getErrorCode());
-     Assert.assertEquals(new BigInteger("59632"),response.getCount());
+     Assert.assertEquals("59632",response.getCount());
    }  
 }
