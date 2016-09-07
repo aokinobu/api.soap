@@ -4,4 +4,5 @@
 .project
 bin
 debug.log
+.springBeans
 pom.xml.versionsBackup

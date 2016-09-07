@@ -9,15 +9,19 @@ import java.math.BigInteger;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.glycoinfo.rdf.SparqlException;
+import org.glycoinfo.rdf.service.GlycanProcedure;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ClassUtils;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
@@ -41,6 +45,9 @@ public class GlycoSequenceEndpointTest {
 	@Value("${local.server.port}")
 	private int port = 0;
 
+	@Autowired
+	GlycanProcedure glycanProcedure;
+	
 	@Before
 	public void init() throws Exception {
 		marshaller.setPackagesToScan(ClassUtils.getPackageName(AliasRegisterRequest.class));
@@ -79,23 +86,24 @@ public class GlycoSequenceEndpointTest {
 	    Assert.assertTrue(response.getDescription().contains("Error+in+GlycoCT+validation"));
 	  }
 	 
-   @Test
-   public void testSendAndReceiveG86383BI() {
-     // new accession number with no iupac...
-     // need -da command line param for java
-     GlycoSequenceDetailRequest request = new GlycoSequenceDetailRequest();
-     request.setAccessionNumber("G86383BI");
-     
-     Object result = new WebServiceTemplate(marshaller).marshalSendAndReceive("http://localhost:"
-         + port + "/ws", request);
-     assertNotNull(result);
-     GlycoSequenceDetailResponse response = (GlycoSequenceDetailResponse)result;
-     logger.debug(response);
-     logger.debug(response.getDescription());
-     Assert.assertEquals(new BigInteger("0"),response.getResponseMessage().getErrorCode());
-     Assert.assertEquals("G86383BI", response.getAccessionNumber());
-     Assert.assertTrue(response.getDescription().contains("G86383BI"));
-   }
+//   @Test
+//   @Transactional
+//   public void testSendAndReceiveNewWithNoIupac() {
+//     // new accession number with no iupac...
+//     // need -da command line param for java
+//     GlycoSequenceDetailRequest request = new GlycoSequenceDetailRequest();
+//     request.setAccessionNumber("G86383BI");
+//     
+//     Object result = new WebServiceTemplate(marshaller).marshalSendAndReceive("http://localhost:"
+//         + port + "/ws", request);
+//     assertNotNull(result);
+//     GlycoSequenceDetailResponse response = (GlycoSequenceDetailResponse)result;
+//     logger.debug(response);
+//     logger.debug(response.getDescription());
+//     Assert.assertEquals(new BigInteger("0"),response.getResponseMessage().getErrorCode());
+//     Assert.assertEquals("G86383BI", response.getAccessionNumber());
+//     Assert.assertTrue(response.getDescription().contains("G86383BI"));
+//   }
 	
    @Test
    public void testSendAndReceiveTextSearchG94473FP() {
@@ -181,10 +189,33 @@ public class GlycoSequenceEndpointTest {
      Assert.assertEquals(new BigInteger("-100"),response.getResponseMessage().getErrorCode());
    }  
    
-   @Test
-   public void testSendAndReceiveTextSearchIupac() {
+//   @Test
+   @Transactional
+   public void testSendAndReceiveNewWithNoIupac() throws SparqlException {
      GlycoSequenceTextSearchRequest request = new GlycoSequenceTextSearchRequest();
-     request.setSequence("Glc");
+     String sec = "RES\n" + 
+         "1b:b-dglc-HEX-1:5\n" + 
+         "2s:n-acetyl\n" + 
+         "3b:b-dglc-HEX-1:5\n" + 
+         "4s:n-acetyl\n" + 
+         "5b:b-dman-HEX-1:5\n" + 
+         "6b:a-dman-HEX-1:5\n" + 
+         "7b:a-dman-HEX-1:5\n" + 
+         "8b:x-llyx-PEN-1:5\n" + 
+         "9b:x-dgal-HEX-1:5\n" + 
+         "10b:x-lgal-HEX-1:5|6:d\n" + 
+         "LIN\n" + 
+         "1:1d(2+1)2n\n" + 
+         "2:1o(4+1)3d\n" + 
+         "3:3d(2+1)4n\n" + 
+         "4:3o(4+1)5d\n" + 
+         "5:5o(3+1)6d\n" + 
+         "6:5o(6+1)7d\n" + 
+         "7:7o(-1+1)8d\n" + 
+         "8:8o(-1+1)9d\n" + 
+         "9:9o(-1+1)10d";
+     String acc = glycanProcedure.register(sec, "254");
+     request.setSequence(sec);
      
      Object result = new WebServiceTemplate(marshaller).marshalSendAndReceive("http://localhost:"
          + port + "/ws", request);
@@ -192,7 +223,7 @@ public class GlycoSequenceEndpointTest {
      GlycoSequenceSearchResponse response = (GlycoSequenceSearchResponse)result;
      logger.debug(response);
      Assert.assertEquals(new BigInteger("0"),response.getResponseMessage().getErrorCode());
-     Assert.assertEquals("G15021LG", response.getAccessionNumber());
+     Assert.assertEquals(acc, response.getAccessionNumber());
    }
    
    @Test
