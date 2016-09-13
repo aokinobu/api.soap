@@ -40,6 +40,7 @@
 			<xs:sequence>
 				<xs:element name="trivialName" type="gtc:trivialName" />
 				<xs:element name="accessionNumber" type="xs:string" />
+				<xs:element name="responseMessage" type="gtc:responseMessage" />
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -124,33 +125,6 @@
 			<xs:sequence>
 				<xs:element name="count" type="xs:string" />
 				<xs:element name="responseMessage" type="gtc:responseMessage" />
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
-
-	<xs:element name="userKeyRequest">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element name="email" type="xs:string" />
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
-	
-	<xs:element name="userKeyResponse">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element name="email" type="xs:string" />
-				<xs:element name="key" type="xs:string" />
-				<xs:element name="responseMessage" type="gtc:responseMessage" />
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
-
-	<xs:element name="userRegistrationRequest">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element name="givenName" type="xs:string" />
-				<xs:element name="email" type="xs:string" />
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
