@@ -146,4 +146,23 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
+	
+	<xs:element name="registerLiteratureRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="accessionNumber" type="xs:string" />
+				<xs:element name="publicationId" type="xs:string" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="registerLiteratureResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="accessionNumber" type="xs:string" />
+				<xs:element name="publicationId" type="xs:string" />
+				<xs:element name="responseMessage" type="gtc:responseMessage" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 </xs:schema>
