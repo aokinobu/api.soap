@@ -152,7 +152,7 @@
 			<xs:sequence>
 				<xs:element name="accessionNumber" type="xs:string" />
 				<xs:element name="publicationId" type="xs:string" />
-				<xs:element name="removeFlag" type="xs:string" default="false" />
+				<xs:element name="removeFlag" type="xs:boolean" default="false" />
 				<xs:element name="responseMessage" type="gtc:responseMessage" />
 			</xs:sequence>
 		</xs:complexType>
