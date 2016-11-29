@@ -86,6 +86,22 @@ public class GlycoSequenceEndpointTest {
 	    Assert.assertTrue(response.getDescription().contains("Error+in+GlycoCT+validation"));
 	  }
 	 
+   @Test
+   public void testSendAndReceiveInvalid() {
+     GlycoSequenceDetailRequest request = new GlycoSequenceDetailRequest();
+     request.setAccessionNumber("G97036DWASDF");
+     
+     Object result = new WebServiceTemplate(marshaller).marshalSendAndReceive("http://localhost:"
+         + port + "/ws", request);
+     assertNotNull(result);
+     GlycoSequenceDetailResponse response = (GlycoSequenceDetailResponse)result;
+     logger.debug(response);
+     logger.debug(response.getDescription());
+     Assert.assertEquals(new BigInteger("-100"),response.getResponseMessage().getErrorCode());
+     Assert.assertEquals("G97036DWASDF", response.getAccessionNumber());
+//     Assert.assertTrue(response.getDescription().contains("Error+in+GlycoCT+validation"));
+   }
+	 
 //   @Test
 //   @Transactional
 //   public void testSendAndReceiveNewWithNoIupac() {
@@ -214,7 +230,7 @@ public class GlycoSequenceEndpointTest {
          "7:7o(-1+1)8d\n" + 
          "8:8o(-1+1)9d\n" + 
          "9:9o(-1+1)10d";
-     String acc = glycanProcedure.register(sec, "254");
+     String acc = glycanProcedure.register(sec, "14e1d868cf50557143032041eef95cc7271b8c3a0bdc5a52fb849cdf29ef4aff");
      request.setSequence(sec);
      
      Object result = new WebServiceTemplate(marshaller).marshalSendAndReceive("http://localhost:"
@@ -237,6 +253,6 @@ public class GlycoSequenceEndpointTest {
      GlycoSequenceCountResponse response = (GlycoSequenceCountResponse)result;
      logger.debug(response);
      Assert.assertEquals(new BigInteger("0"),response.getResponseMessage().getErrorCode());
-     Assert.assertEquals("59632",response.getCount());
+     Assert.assertEquals("59747",response.getCount());
    }  
 }

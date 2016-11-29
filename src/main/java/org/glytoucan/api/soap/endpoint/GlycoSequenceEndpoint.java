@@ -123,6 +123,7 @@ public class GlycoSequenceEndpoint {
     rm.setErrorCode(new BigInteger("0"));
 
     gssr.setAccessionNumber(se.getValue(GlycanProcedure.AccessionNumber));
+    gssr.setConvertedSequence(se.getValue(GlycanProcedure.ResultSequence));
     gssr.setSequence(se.getValue(GlycanProcedure.Sequence));
     gssr.setImage(se.getValue(GlycanProcedure.Image));
     gssr.setResponseMessage(rm);
