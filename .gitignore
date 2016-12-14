@@ -6,3 +6,4 @@ bin
 debug.log
 .springBeans
 pom.xml.versionsBackup
+api.soap.log
