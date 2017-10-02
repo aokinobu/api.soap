@@ -99,6 +99,14 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
+	
+	<xs:element name="glycoSequenceCoreDetailRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="accessionNumber" type="xs:string" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 
 	<xs:element name="glycoSequenceDetailResponse">
 		<xs:complexType>

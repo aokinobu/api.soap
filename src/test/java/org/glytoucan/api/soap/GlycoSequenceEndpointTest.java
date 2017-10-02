@@ -101,6 +101,21 @@ public class GlycoSequenceEndpointTest {
      Assert.assertEquals("G97036DWASDF", response.getAccessionNumber());
 //     Assert.assertTrue(response.getDescription().contains("Error+in+GlycoCT+validation"));
    }
+   
+   @Test
+   public void testSendAndReceiveArchived() {
+     GlycoSequenceCoreDetailRequest request = new GlycoSequenceCoreDetailRequest();
+     request.setAccessionNumber("G68335WN");
+     
+     Object result = new WebServiceTemplate(marshaller).marshalSendAndReceive("http://localhost:"
+         + port + "/ws", request);
+     assertNotNull(result);
+     GlycoSequenceDetailResponse response = (GlycoSequenceDetailResponse)result;
+     logger.debug(response);
+     logger.debug(response.getDescription());
+     Assert.assertEquals(new BigInteger("-100"),response.getResponseMessage().getErrorCode());
+     Assert.assertEquals("G68335WN", response.getAccessionNumber());
+   }
 	 
 //   @Test
 //   @Transactional

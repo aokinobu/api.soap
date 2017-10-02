@@ -14,6 +14,7 @@ import org.glycoinfo.rdf.glycan.ResourceEntry;
 import org.glycoinfo.rdf.glycan.Saccharide;
 import org.glycoinfo.rdf.service.GlycanProcedure;
 import org.glycoinfo.rdf.service.exception.InvalidException;
+import org.glytoucan.api.soap.GlycoSequenceCoreDetailRequest;
 import org.glytoucan.api.soap.GlycoSequenceCountRequest;
 import org.glytoucan.api.soap.GlycoSequenceCountResponse;
 import org.glytoucan.api.soap.GlycoSequenceDetailRequest;
@@ -92,6 +93,46 @@ public class GlycoSequenceEndpoint {
     return gsdr;
   }
 
+  
+  /**
+   * 
+   * Query entry using core accession number.
+   * 
+   * @param accessionNumber
+   * @return
+   */
+  @PayloadRoot(namespace = NAMESPACE_URI, localPart = "glycoSequenceCoreDetailRequest")
+  @ResponsePayload
+  public GlycoSequenceDetailResponse queryEntry(@RequestPayload GlycoSequenceCoreDetailRequest request) {
+    Assert.notNull(request);
+    Assert.notNull(request.getAccessionNumber());
+
+    SparqlEntity se = null;
+    ResponseMessage rm = new ResponseMessage();
+    GlycoSequenceDetailResponse gsdr = new GlycoSequenceDetailResponse();
+	try {
+		se = glycanProcedure.getDescriptionCore(request.getAccessionNumber());
+	} catch (InvalidException e) {
+		// invalid data in se, return with errorcode.
+	    rm.setMessage("Invalid Accession Number");
+	    rm.setErrorCode(new BigInteger("-100"));
+	    gsdr.setAccessionNumber(request.getAccessionNumber());
+	    gsdr.setResponseMessage(rm);
+	    return gsdr;
+	}
+
+    rm.setMessage(se.getValue(GlycanProcedure.Description));
+    rm.setErrorCode(new BigInteger("0"));
+
+    gsdr.setAccessionNumber(se.getValue(ResourceEntry.Identifier));
+    gsdr.setDescription(se.getValue(GlycanProcedure.Description));
+    gsdr.setIupac(se.getValue(GlycoSequence.Sequence));
+    gsdr.setMass(se.getValue(DerivatizedMass.MassLabel));
+    gsdr.setSequence(se.getValue(GlycoSequence.Sequence));
+    gsdr.setResponseMessage(rm);
+    return gsdr;
+  }
+  
   /**
    * 
    * Search for entry using sequence text.
