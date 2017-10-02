@@ -168,4 +168,28 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
+	
+	<xs:element name="glycoSequenceArchivedRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="limit" type="xs:string" />
+				<xs:element name="offset" type="xs:string" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:simpleType name="glycoSequenceArchivedList">
+  		<xs:list itemType="xs:string" />
+	</xs:simpleType>
+	
+	<xs:element name="glycoSequenceArchivedResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="archivedList" type="gtc:glycoSequenceArchivedList" />
+				<xs:element name="responseMessage" type="gtc:responseMessage" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	
 </xs:schema>

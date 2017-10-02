@@ -6,11 +6,13 @@ package org.glytoucan.api.soap;
 import static org.junit.Assert.assertNotNull;
 
 import java.math.BigInteger;
+import java.util.Iterator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.glycoinfo.rdf.SparqlException;
 import org.glycoinfo.rdf.service.GlycanProcedure;
+import org.glycoinfo.rdf.service.exception.InvalidException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -269,5 +271,27 @@ public class GlycoSequenceEndpointTest {
      logger.debug(response);
      Assert.assertEquals(new BigInteger("0"),response.getResponseMessage().getErrorCode());
      Assert.assertEquals("59747",response.getCount());
-   }  
+   }
+   
+   @Test
+   public void testSendAndReceiveArchivedList() {
+     GlycoSequenceArchivedRequest request = new GlycoSequenceArchivedRequest();
+     request.setLimit("100");
+     request.setOffset("10");
+     
+     Object result = new WebServiceTemplate(marshaller).marshalSendAndReceive("http://localhost:"
+         + port + "/ws", request);
+     assertNotNull(result);
+     GlycoSequenceArchivedResponse response = (GlycoSequenceArchivedResponse)result;
+     logger.debug(response);
+     logger.debug(response.getArchivedList());
+     
+     for (Iterator iterator = response.getArchivedList().iterator(); iterator.hasNext();) {
+		String id = (String) iterator.next();
+		logger.debug("archived ID:" + id);		
+     }
+     
+     Assert.assertEquals(new BigInteger("0"),response.getResponseMessage().getErrorCode());
+     Assert.assertEquals(100, response.getArchivedList().size());
+   }
 }

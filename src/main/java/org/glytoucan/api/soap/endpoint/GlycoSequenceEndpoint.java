@@ -1,6 +1,8 @@
 package org.glytoucan.api.soap.endpoint;
 
 import java.math.BigInteger;
+import java.util.Iterator;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -14,6 +16,8 @@ import org.glycoinfo.rdf.glycan.ResourceEntry;
 import org.glycoinfo.rdf.glycan.Saccharide;
 import org.glycoinfo.rdf.service.GlycanProcedure;
 import org.glycoinfo.rdf.service.exception.InvalidException;
+import org.glytoucan.api.soap.GlycoSequenceArchivedRequest;
+import org.glytoucan.api.soap.GlycoSequenceArchivedResponse;
 import org.glytoucan.api.soap.GlycoSequenceCoreDetailRequest;
 import org.glytoucan.api.soap.GlycoSequenceCountRequest;
 import org.glytoucan.api.soap.GlycoSequenceCountResponse;
@@ -193,5 +197,49 @@ public class GlycoSequenceEndpoint {
     gscr.setCount(se.getValue("total"));
     gscr.setResponseMessage(rm);
     return gscr;
+  }
+  
+  /**
+   * 
+   * Query entry using core accession number.
+   * 
+   * @param accessionNumber
+   * @return
+   */
+  @PayloadRoot(namespace = NAMESPACE_URI, localPart = "glycoSequenceArchivedRequest")
+  @ResponsePayload
+  public GlycoSequenceArchivedResponse queryEntry(@RequestPayload GlycoSequenceArchivedRequest request) {
+    Assert.notNull(request);
+
+    List<SparqlEntity> seList = null;
+    String id = null;
+    ResponseMessage rm = new ResponseMessage();
+    GlycoSequenceArchivedResponse response = new GlycoSequenceArchivedResponse();
+	try {
+		seList = glycanProcedure.getArchivedAccessionNumbers(request.getOffset(), request.getLimit());
+	} catch (InvalidException e) {
+		// invalid data in se, return with errorcode.
+	    rm.setMessage(e.getMessage());
+	    rm.setErrorCode(new BigInteger("-100"));
+	    response.setResponseMessage(rm);
+	    return response;
+	}
+
+    rm.setMessage("archived list");
+    rm.setErrorCode(new BigInteger("0"));
+
+    response.setResponseMessage(rm);
+    for (Iterator iterator = seList.iterator(); iterator.hasNext();) {
+		SparqlEntity se = (SparqlEntity) iterator.next();
+		if (se.getValue("message") != null) {
+			response.getArchivedList().add(se.getValue("message"));
+		} else {
+			id = se.getValue("archivedId");
+			logger.debug("archived ID:" + id);
+			response.getArchivedList().add(id);
+		}
+	}
+
+    return response;
   }
 }
